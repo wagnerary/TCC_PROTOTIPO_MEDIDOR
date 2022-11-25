@@ -1,0 +1,14 @@
+Sensores	KEYWORD1
+begin	KEYWORD2
+isLeaning	KEYWORD2
+beatDetection	KEYWORD2
+getBeatDetection	KEYWORD2
+readSaturationO2	KEYWORD2
+setSaturationO2	KEYWORD2
+getSaturationO2	KEYWORD2
+readBeatPerMinute	KEYWORD2
+setBeatPerMinute	KEYWORD2
+getBeatPerMinute	KEYWORD2
+readTemperature	KEYWORD2
+setTemperature	KEYWORD2
+getTemperature	KEYWORD2

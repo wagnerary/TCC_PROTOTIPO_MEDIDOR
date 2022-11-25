@@ -1,0 +1,4 @@
+WiFiConnect	KEYWORD1
+connect	KEYWORD2
+disconnect	KEYWORD2
+connected	KEYWORD2

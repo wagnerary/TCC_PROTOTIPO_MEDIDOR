@@ -1,0 +1,6 @@
+MySQLConnect	KEYWORD1
+connect	KEYWORD2
+disconnect	KEYWORD2
+receiveData	KEYWORD2
+sendData	KEYWORD2
+disableDevice	KEYWORD2

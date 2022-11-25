@@ -1,0 +1,5 @@
+Display	KEYWORD1
+begin	KEYWORD2
+showLoading	KEYWORD2
+showErrorMessage	KEYWORD2
+showDataSensor	KEYWORD2

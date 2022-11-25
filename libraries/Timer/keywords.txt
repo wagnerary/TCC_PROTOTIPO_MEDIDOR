@@ -1,0 +1,8 @@
+Timer	KEYWORD1
+time	KEYWORD2
+update	KEYWORD2
+deltaTime	KEYWORD2
+elapsedTime	KEYWORD2
+releaseAfter	KEYWORD2
+holdForTime	KEYWORD2
+restartHold	KEYWORD2
