@@ -71,7 +71,7 @@ void Sensores::readSaturationO2()
       float __tmpValue = 100.0 * (__satRatio);
 
       if(this->_countSaturation >= SATURATION_ARR_SIZE) {
-        int __sumValue = 0;
+        float __sumValue = 0;
 
         // Faz a somatoria das medicoes.
         for(int i = 0; i <= SATURATION_ARR_SIZE; i++) {
@@ -79,17 +79,17 @@ void Sensores::readSaturationO2()
         }
 
         // Realiza o calculo da media dos valores obtidos.
-        int __newValue = __sumValue / SATURATION_ARR_SIZE;
+        float __newValue = float(__sumValue / SATURATION_ARR_SIZE);
         this->setSaturationO2(__newValue);
 
         this->_countSaturation = 0;
       }
 
       // Verifica se o valor obtido esta dentro da margem aceitavel.
-      int __currentValue = Limiter::limiter(int(__tmpValue + SATURATION_OFFSET), int(SATURATION_MIN_VALUE), int(SATURATION_MAX_VALUE));
+      float __currentValue = Limiter::limiter(float(__tmpValue + SATURATION_OFFSET), float(SATURATION_MIN_VALUE), float(SATURATION_MAX_VALUE));
 
       // Controla a diferenca entre os valores, se a diferenca dos valores atual e anterior for muito grande ignora o valor atual medido.
-      if((this->_saturationO2 > 0) && !(Limiter::range(this->_saturationO2, __currentValue, 10))) {
+      if((this->_saturationO2 > 0) && !(Limiter::range(float(this->_saturationO2), float(__currentValue), float(10)))) {
         __currentValue = this->_saturationO2;
       }
 
@@ -100,13 +100,13 @@ void Sensores::readSaturationO2()
 }
 
 // Define o valor para a variavel (_saturationO2).
-void Sensores::setSaturationO2(int __value)
+void Sensores::setSaturationO2(float __value)
 {
-  this->_saturationO2 = Limiter::limiter(__value, int(SATURATION_MIN_VALUE), int(SATURATION_MAX_VALUE));
+  this->_saturationO2 = Limiter::limiter(float(__value), float(SATURATION_MIN_VALUE), float(SATURATION_MAX_VALUE));
 }
 
 // Retorna o valor da variavel (_saturationO2).
-int Sensores::getSaturationO2()
+float Sensores::getSaturationO2()
 {
   return this->_saturationO2;
 }
@@ -116,8 +116,8 @@ int Sensores::getSaturationO2()
 void Sensores::readBeatPerMinute(double __cycleTime)
 {
   // Define a margem minima e maxima do bpm
-  int __minValue = int(60 / BEATPERMINUTE_MIN_VALUE);
-  int __maxValue = int(60 / BEATPERMINUTE_MAX_VALUE);
+  float __minValue = int(60 / BEATPERMINUTE_MIN_VALUE);
+  float __maxValue = int(60 / BEATPERMINUTE_MAX_VALUE);
 
   // Soma o tempo entre os batimentos.
   _timeBetweenBeats += __cycleTime;
@@ -125,13 +125,13 @@ void Sensores::readBeatPerMinute(double __cycleTime)
   // Verifica se houve batimento.
   if(this->getBeatDetection()) {
     // Calcula os batimentos por tempo.
-    int __tmpValue = int(60 / _timeBetweenBeats);
+    float __tmpValue = float(60 / _timeBetweenBeats);
 
     // Verifica se o batimento obtido esta dentro de uma margem valida.
     if(__tmpValue > BEATPERMINUTE_MIN_VALUE && __tmpValue < BEATPERMINUTE_MAX_VALUE) {
       // Calcula a media das ultimas N medicoes.
       if(this->_countBeatPerMinute >= BEATPERMINUTE_ARR_SIZE) {
-        int __sumValue = 0;
+        float __sumValue = 0;
 
         // Faz a somatoria das medicoes.
         for(int i = 0; i <= BEATPERMINUTE_ARR_SIZE; i++) {
@@ -139,17 +139,17 @@ void Sensores::readBeatPerMinute(double __cycleTime)
         }
 
         // Realiza o calculo da media dos valores obtidos.
-        int __newValue = __sumValue / BEATPERMINUTE_ARR_SIZE;
+        float __newValue = __sumValue / BEATPERMINUTE_ARR_SIZE;
         this->setBeatPerMinute(__newValue);
 
         this->_countBeatPerMinute = 0;
       }
 
       // Verifica se o valor obtido esta dentro da margem aceitavel.
-      int __currentValue = Limiter::limiter(int(__tmpValue + BEATPERMINUTE_OFFSET), int(BEATPERMINUTE_MIN_VALUE), int(BEATPERMINUTE_MAX_VALUE));
+      float __currentValue = Limiter::limiter(float(__tmpValue + BEATPERMINUTE_OFFSET), float(BEATPERMINUTE_MIN_VALUE), float(BEATPERMINUTE_MAX_VALUE));
 
       // Controla a diferenca entre os valores, se a diferenca dos valores atual e anterior for muito grande ignora o valor atual medido.
-      if((this->_beatPerMinute > 0) && !(Limiter::range(this->_beatPerMinute, __currentValue, 50))) {
+      if((this->_beatPerMinute > 0) && !(Limiter::range(float(this->_beatPerMinute), float(__currentValue), float(50)))) {
         __currentValue = this->_beatPerMinute;
       }
 
@@ -163,13 +163,13 @@ void Sensores::readBeatPerMinute(double __cycleTime)
 }
 
 // Define o valor para a variavel (_beatPerMinute).
-void Sensores::setBeatPerMinute(int __value)
+void Sensores::setBeatPerMinute(float __value)
 {
-  this->_beatPerMinute = Limiter::limiter(__value, int(BEATPERMINUTE_MIN_VALUE), int(BEATPERMINUTE_MAX_VALUE));
+  this->_beatPerMinute = Limiter::limiter(float(__value), float(BEATPERMINUTE_MIN_VALUE), float(BEATPERMINUTE_MAX_VALUE));
 }
 
 // Retorna o valor da variavel (_beatPerMinute).
-int Sensores::getBeatPerMinute()
+float Sensores::getBeatPerMinute()
 {
   return this->_beatPerMinute;
 }
@@ -201,7 +201,7 @@ void Sensores::readTemperature()
   float __currentValue = Limiter::limiter(float(__temperature + TEMPERATURE_OFFSET), float(TEMPERATURE_MIN_VALUE), float(TEMPERATURE_MAX_VALUE));
 
   // Controla a diferenca entre os valores, se a diferenca dos valores atual e anterior for muito grande ignora o valor atual medido.
-  if((this->_temperature > 0) && !(Limiter::range(this->_temperature, __currentValue, 7.5))) {
+  if((this->_temperature > 0) && !(Limiter::range(float(this->_temperature), float(__currentValue), float(7.5)))) {
     __currentValue = this->_temperature;
   }
 
@@ -212,7 +212,7 @@ void Sensores::readTemperature()
 // Define o valor para variavel (_temperature).
 void Sensores::setTemperature(float __value)
 {
-  this->_temperature = Limiter::limiter(__value, float(TEMPERATURE_MIN_VALUE), float(TEMPERATURE_MAX_VALUE));
+  this->_temperature = Limiter::limiter(float(__value), float(TEMPERATURE_MIN_VALUE), float(TEMPERATURE_MAX_VALUE));
 }
 
 // Retorna o valor da variavel (_temperature).
