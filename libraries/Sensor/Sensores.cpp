@@ -12,14 +12,6 @@
 
 MAX30105 _sensor;
 
-// Valores usados para a saturacao.
-const int Sensores::spO2LUT[43] = {
-  100, 100, 100, 100, 99, 99, 99, 99, 99, 99, 
-  98, 98, 98, 98, 98, 97, 97, 97, 97, 97, 97, 
-  96, 96, 96, 96, 96, 96, 95, 95, 95, 95, 95, 
-  95, 94, 94, 94, 94, 94, 93, 93, 93, 93, 93
-};
-
 Sensores::Sensores()
 {}
 
@@ -68,18 +60,15 @@ void Sensores::readSaturationO2()
     long __valueRed = _sensor.getRed();
     long __valueIR  = _sensor.getIR();
 
-    // Calculando a razao
-    float __acSqRatio = 100.0 * log(sq(__valueRed)) / log(sq(__valueIR));
+    // Calculando o valor da saturacao;
+    float __divider  = __valueIR + __valueRed;
+    float __satRatio = __valueIR / __divider;
 
     // Verifica se trouxe algum valor valido.
-    if(!isnan(__acSqRatio)) {
-      int __index = 0;
-      if(__acSqRatio > 66) {
-        __index = (int)__acSqRatio - 66;
-      }
-      else if (__acSqRatio > 50) {
-        __index = (int)__acSqRatio - 50;
-      }
+    if(!isnan(__satRatio)) {
+
+      // Calculando a razao
+      float __tmpValue = 100.0 * (__satRatio);
 
       if(this->_countSaturation >= SATURATION_ARR_SIZE) {
         int __sumValue = 0;
@@ -97,10 +86,10 @@ void Sensores::readSaturationO2()
       }
 
       // Verifica se o valor obtido esta dentro da margem aceitavel.
-      int __currentValue = Limiter::limiter(int(this->spO2LUT[__index] + SATURATION_OFFSET), int(SATURATION_MIN_VALUE), int(SATURATION_MAX_VALUE));
+      int __currentValue = Limiter::limiter(int(__tmpValue + SATURATION_OFFSET), int(SATURATION_MIN_VALUE), int(SATURATION_MAX_VALUE));
 
       // Controla a diferenca entre os valores, se a diferenca dos valores atual e anterior for muito grande ignora o valor atual medido.
-      if((this->_saturationO2 > 0) && !(Limiter::range(this->_saturationO2, __currentValue, 5))) {
+      if((this->_saturationO2 > 0) && !(Limiter::range(this->_saturationO2, __currentValue, 10))) {
         __currentValue = this->_saturationO2;
       }
 
@@ -198,7 +187,7 @@ void Sensores::readTemperature()
 
     // Faz a somatoria dos valores obtidos.
     for(int i = 0; i <= TEMPERATURE_ARR_SIZE; i++){
-      __sumValue += this->_arrSaturationO2[i];
+      __sumValue += this->_arrTemperature[i];
     }
 
     // Realiza o calculo da media dos valores obtidos.
@@ -212,11 +201,11 @@ void Sensores::readTemperature()
   float __currentValue = Limiter::limiter(float(__temperature + TEMPERATURE_OFFSET), float(TEMPERATURE_MIN_VALUE), float(TEMPERATURE_MAX_VALUE));
 
   // Controla a diferenca entre os valores, se a diferenca dos valores atual e anterior for muito grande ignora o valor atual medido.
-  if((this->_temperature > 0) && !(Limiter::range(this->_temperature, __currentValue, 5.0))) {
+  if((this->_temperature > 0) && !(Limiter::range(this->_temperature, __currentValue, 7.5))) {
     __currentValue = this->_temperature;
   }
 
-  this->_arrSaturationO2[this->_countTemperature] = __currentValue;                                
+  this->_arrTemperature[this->_countTemperature] = __currentValue;                                
   this->_countTemperature++;
 }
 
