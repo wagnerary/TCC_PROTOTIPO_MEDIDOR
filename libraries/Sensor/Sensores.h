@@ -41,12 +41,12 @@ class Sensores
   private:
     bool  _beatDetection = false;
 
-    int   _saturationO2  = 0;
-    int   _arrSaturationO2[SATURATION_ARR_SIZE];
+    float _saturationO2  = 0;
+    float _arrSaturationO2[SATURATION_ARR_SIZE];
     int   _countSaturation;
 
-    int   _beatPerMinute = 0;
-    int   _arrBeatPerMinute[BEATPERMINUTE_ARR_SIZE];
+    float _beatPerMinute = 0;
+    float _arrBeatPerMinute[BEATPERMINUTE_ARR_SIZE];
     int   _countBeatPerMinute;
     float _timeBetweenBeats;
 
@@ -54,8 +54,8 @@ class Sensores
     float _arrTemperature[TEMPERATURE_ARR_SIZE];
     int   _countTemperature;
 
-    void  setSaturationO2(int);
-    void  setBeatPerMinute(int);
+    void  setSaturationO2(float);
+    void  setBeatPerMinute(float);
     void  setTemperature(float);
 
   public:
@@ -65,9 +65,9 @@ class Sensores
     void  beatDetection(void);
     bool  getBeatDetection(void);
     void  readSaturationO2(void);
-    int   getSaturationO2(void);
+    float getSaturationO2(void);
     void  readBeatPerMinute(double);
-    int   getBeatPerMinute(void);
+    float getBeatPerMinute(void);
     void  readTemperature(void);
     float getTemperature(void);
 
