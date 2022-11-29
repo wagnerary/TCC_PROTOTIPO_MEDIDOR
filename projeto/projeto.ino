@@ -32,9 +32,9 @@ float _curTimeWait      = 0;              // Contador de espera para calibragem
 float _timeToResetWait  = 0;              // Contador para resetar o contador de _curTimeWait
 float _timeToRefresh    = 2;              // Tempo de atualizacao da tela (em segundos)
 float _curTimeRefresh   = 0;              // Contador de espera para atualizacao de tela
-float _timeToSendData   = 30;             // Tempo de envio de dados para SGBD (em segundos)
+float _timeToSendData   = 15;             // Tempo de envio de dados para SGBD (em segundos)
 float _curTimeSendData  = 0;              // Contador de espera para envio de dados
-float _timeToInactive   = 300;            // Tempo para desativar o paciente (em segundos)
+float _timeToInactive   = 600;            // Tempo para desativar o paciente (em segundos)
 float _curTimeInactive  = 0;              // Contador de espera para desativar
 
 // Dados de medicao.
@@ -108,9 +108,9 @@ void loop()
       sensor.readTemperature();
   
       // Pega os valores obtidos.
-      _saturationO2  = sensor.getSaturationO2();
-      _beatPerMinute = sensor.getBeatPerMinute();
-      _temperature   = sensor.getTemperature();
+      _saturationO2  = int(sensor.getSaturationO2());
+      _beatPerMinute = int(sensor.getBeatPerMinute());
+      _temperature   = float(sensor.getTemperature());
   
       // Aguarda o sensor calibrar para enviar os dados.
       if(_curTimeWait >= _timeToWait) {
